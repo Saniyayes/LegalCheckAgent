@@ -1,0 +1,35 @@
+# Python
+__pycache__/
+*.pyc
+
+# Virtual environment
+venv/
+.venv/
+env/
+
+# Secrets
+.env
+
+# Local data
+db/
+chroma_db/
+*.log
+streamlit.pid
+streamlit.url
+.vscode
+# OS
+.DS_Store
+Thumbs.db
+@'
+.venv/
+venv/
+__pycache__/
+*.pyc
+.env
+.env.*
+!.env.example
+*.log
+target/
+node_modules/
+dist/
+'@ | Set-Content .gitignore

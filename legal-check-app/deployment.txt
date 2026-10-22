@@ -1,0 +1,72 @@
+# Deployment Guide for AI Legal Guardian (Streamlit)
+
+This project is built using Streamlit and can be easily deployed to cloud platforms for free. The easiest and recommended way to deploy this application is using Streamlit Community Cloud.
+
+## Option 1: Deploying to Streamlit Community Cloud (Recommended)
+
+Streamlit Community Cloud allows you to deploy public GitHub repositories for free.
+
+### Step 1: Push to GitHub
+1. Make sure your project is a Git repository.
+2. Ensure you have a `.gitignore` file that ignores the `.env` file (you should never commit your API keys) and `__pycache__` directories.
+3. Commit all your code and push it to a new public or private repository on GitHub.
+   - The repository must contain `app.py`, `requirements.txt`, and all the Python files (`agent*.py`, `document_parser.py`, etc.).
+
+### Step 2: Deploy on Streamlit Cloud
+1. Go to [share.streamlit.io](https://share.streamlit.io/) and log in with your GitHub account.
+2. Click on **New app**.
+3. Select the repository you just created, the branch (usually `main` or `master`), and set the Main file path to `app.py`.
+4. Click **Advanced settings** (this is crucial for your API key).
+
+### Step 3: Add Secrets (Environment Variables)
+1. In the Advanced settings, you will see a text area for Secrets.
+2. Add your Groq API key exactly as it appears in your `.env` file:
+   ```toml
+   GROQ_API_KEY="your_groq_api_key_here"
+   ```
+3. Click **Save**.
+
+### Step 4: Deploy
+1. Click **Deploy!**
+2. Streamlit will now build your application, install the dependencies from `requirements.txt`, and start the app.
+3. Once deployed, you will be provided with a public URL to access your Legal Check application.
+
+---
+
+## Option 2: Deploying to Render
+
+Render is another excellent platform for hosting web applications.
+
+### Step 1: Push to GitHub
+As with Streamlit Cloud, push your code to a GitHub repository, ensuring `.env` is ignored.
+
+### Step 2: Create a Render Web Service
+1. Sign up/Log in to [Render](https://render.com/).
+2. Click **New +** and select **Web Service**.
+3. Connect your GitHub account and select your repository.
+
+### Step 3: Configure the Web Service
+- **Name:** Choose a name for your app.
+- **Environment:** Select `Python 3`.
+- **Build Command:** `pip install -r requirements.txt`
+- **Start Command:** `streamlit run app.py --server.port $PORT --server.address 0.0.0.0`
+
+### Step 4: Add Environment Variables
+1. Scroll down to the **Environment Variables** section.
+2. Click **Add Environment Variable**.
+3. Add the following key-value pair:
+   - Key: `GROQ_API_KEY`
+   - Value: `your_groq_api_key_here`
+4. Choose your instance type (the Free tier works for basic usage).
+
+### Step 5: Deploy
+1. Click **Create Web Service**.
+2. Render will build and deploy your app. Once finished, you will receive a `.onrender.com` URL to access your app.
+
+---
+
+## Troubleshooting
+
+- **Module Not Found Errors:** If the deployed app fails to start with a "ModuleNotFoundError", ensure that the missing library is explicitly listed in `requirements.txt` with its correct version.
+- **Missing API Key:** If the application errors out saying "GROQ_API_KEY is not set" or "API key not found", ensure you have correctly added the key to the Secrets (Streamlit Cloud) or Environment Variables (Render) section.
+- **Large Files/Memory:** Legal documents can be large. If the app crashes during processing, you may be hitting the memory limit of the free tier on your hosting provider.
